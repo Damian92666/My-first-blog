@@ -27,6 +27,7 @@ body {
 
 h1 {
     font-family: Jokerman, cursive;
+    color: gray;
 }
 
 h2 {
@@ -36,6 +37,7 @@ h2 {
 
 h3 {
     font-family: Arial;
+
 
 }
 
@@ -64,16 +66,4 @@ h3 {
 
 .post h2 a, .post h1 a:visited {
     color: gray;
-}
-
-.footer {
-   position: fixed;
-   right: 15px;
-   bottom: 0;
-   width: 100%;
-   background-color: azure;
-   color: black;
-   text-align: right;
-    font-size: 20px;
-
 }
