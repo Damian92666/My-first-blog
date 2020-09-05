@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <form method="POST">{% csrf_token %}
+        {{ form.as_p }}
+            <h3>Czy na pewno chcesz usunąć post "{{ object.title }}" ?</h3>
+        <div>
+            <button type="submit" class="btn btn-danger">Usuń post</button>
+            <a class="btn btn-outline-success" href="{% url 'post_detail' object.id %}">Anuluj</a>
+        </div>
+    </form>
+{% endblock %}
+
+
