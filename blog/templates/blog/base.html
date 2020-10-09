@@ -11,8 +11,8 @@
     <body>
         <div class="page-header">
             {% if user.is_authenticated %}
-            <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus-sign"></span></a>
                 <a href="{% url 'logout' %}" class="top-menu"><span class="glyphicon glyphicon-log-out"></span></a>
+            <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus-sign"></span></a>
             <h1><a href="/">Mój blog</a></h1>
             {% else %}
                 <a href="{% url 'register' %}" class="top-menu"><span class="glyphicon glyphicon-user"></span></a>

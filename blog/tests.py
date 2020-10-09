@@ -1,9 +1,35 @@
 from datetime import datetime
 from django.contrib.auth.models import User
-from django.db import IntegrityError
+from django.db import IntegrityError, DatabaseError
 from django.test import TestCase
 from django.utils import timezone
 from blog.models import Post
+
+
+class PostViewTest(TestCase):
+    def test_list_has_table(self):
+        """Wskazany adres powinien posiadać podany parametr"""
+        response = self.client.get("/post/new/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "title")
+
+    def test_list_has_table_2(self):
+        """Wskazany adres powinien posiadać podany parametr"""
+        response = self.client.get("/post/new/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "text")
+
+    def test_list_has_table_3(self):
+        """Wskazany adres powinien posiadać podany parametr"""
+        response = self.client.get("/login/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "text")
+
+    def test_list_has_table_4(self):
+        """Wskazany adres powinien posiadać podany parametr"""
+        response = self.client.get("/logout/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "title")
 
 
 class PostTest(TestCase):
@@ -59,13 +85,24 @@ class PostTest(TestCase):
         title_name = "Python"
         with self.assertRaises(IntegrityError):
             Post.objects.create(title=title_name)
-            Post.objects.create(title=title_name)
+            # Post.objects.create(title=title_name)
 
+    def test_should_raise_max_length_exception(self):
+        """Powinien zwrócić wyjątek przy zbyt długim tytule"""
+        post_title = "PrzykładowyTytułPrzykładowyTytułPrzykładowyTytuł" \
+                     "PrzykładowyTytułPrzykładowyTytułPrzykładowyTytuł"
 
-    # def test_should_raise_max_length_exception(self):
-    #     """Powinien zwrócić wyjątek przy zbyt długim tytule"""
-    #     post_title = "PrzykładowyTytułPrzykładowyTytułPrzykładowyTytułPrzykładowyTytuł" \
-    #                  "PrzykładowyTytułPrzykładowyTytułPrzykładowyTytułPrzykładowyTytuł" \
-    #                  "PrzykładowyTytułPrzykładowyTytułPrzykładowyTytułPrzykładowyTytuł" \
-    #                  "PrzykładowyTytułPrzykładowyTytułPrzykładowyTytułPrzykładowyTytuł"
-    #     Post.objects.create(title=post_title, author=self.user)
+        with self.assertRaises(DatabaseError):
+            Post.objects.create(title=post_title, author=self.user)
+
+    def test_should_create_user(self):
+        """Powinien utworzyć nowego użytkownika"""
+        user_name = 'Testowy'
+        user_email = '123@o2.pl'
+        user_password = '12345'
+        user = User.objects.create_user(username='Testowy', email='123@o2.pl', password='12345')
+        user.refresh_from_db()
+        self.assertEqual(user_name, user.username)
+        # self.assertEqual(user_email, user.email)
+        # self.assertEqual(user_password, user.password)
+        user.delete()
